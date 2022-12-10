@@ -44,10 +44,8 @@ venom
       logQR: false,
       disableSpins: true, // Will disable Spinnies animation, useful for containers (docker) for a better log
       disableWelcome: true, // Will disable the welcoming message which appears in the beginning
-      puppeteerOptions: {
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        executablePath: "/usr/bin/chromium-browser",
-      },
+      useChrome: false,
+      chromiumVersion: "818858",
     }
   )
   .then((client) => start(client))
