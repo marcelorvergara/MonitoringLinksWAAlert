@@ -15,7 +15,6 @@ venom
   .create(
     "alarm",
     (base64Qr, asciiQR, attempts, urlCode) => {
-      console.log(asciiQR);
       var matches = base64Qr.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
         response = {};
 
@@ -45,11 +44,11 @@ venom
       logQR: false,
       disableSpins: true, // Will disable Spinnies animation, useful for containers (docker) for a better log
       disableWelcome: true, // Will disable the welcoming message which appears in the beginning
+      headless: true,
       puppeteerOptions: {
         headless: true,
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       },
-      debug: true,
     }
   )
   .then((client) => start(client))
