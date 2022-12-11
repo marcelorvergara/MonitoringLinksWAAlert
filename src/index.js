@@ -15,6 +15,7 @@ venom
   .create(
     "alarm",
     (base64Qr, asciiQR, attempts, urlCode) => {
+      console.log(asciiQR);
       var matches = base64Qr.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
         response = {};
 
