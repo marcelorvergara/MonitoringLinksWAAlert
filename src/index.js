@@ -58,7 +58,8 @@ function start(client) {
   client.onStateChange((state) => {
     console.log("New state: ", state);
     // Force whatsapp take over
-    if ("CONFLICT".includes(state)) client.useHere();
+    if (["CONFLICT", "UNPAIRED", "UNLAUNCHED"].includes(state))
+      client.useHere();
     // Detect disconnect on whatsapp
     if ("UNPAIRED".includes(state)) console.log("logout");
   });
@@ -69,7 +70,7 @@ function start(client) {
     clearTimeout(time);
     if (state === "DISCONNECTED" || state === "SYNCING") {
       time = setTimeout(() => {
-        client.close();
+        client.useHere();
       }, 80000);
     }
   });
