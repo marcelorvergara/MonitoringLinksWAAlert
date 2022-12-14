@@ -56,7 +56,7 @@ venom
     let started = false;
     client.onStateChange((state) => {
       console.log("New state: ", state);
-      if (state === "CONNECTED" && !started) {
+      if (!started) {
         start(client);
         started = true;
       }
