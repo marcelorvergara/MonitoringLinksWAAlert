@@ -51,30 +51,35 @@ venom
       },
     }
   )
-  .then((client) => start(client))
+  .then((client) => {
+    let time = 0;
+    let started = false;
+    client.onStateChange((state) => {
+      console.log("New state: ", state);
+      if (state === "CONNECTED" && !started) {
+        start(client);
+        started = true;
+      }
+      // Force whatsapp take over
+      if (["CONFLICT", "UNPAIRED", "UNLAUNCHED"].includes(state))
+        client.useHere();
+      // Detect disconnect on whatsapp
+      if ("UNPAIRED".includes(state)) console.log("logout");
+    });
+
+    client.onStreamChange((state) => {
+      console.log("State Connection Stream: " + state);
+      clearTimeout(time);
+      if (state === "DISCONNECTED" || state === "SYNCING") {
+        time = setTimeout(() => {
+          client.close();
+        }, 80000);
+      }
+    });
+  })
   .catch((error) => console.error(error));
 
 function start(client) {
-  client.onStateChange((state) => {
-    console.log("New state: ", state);
-    // Force whatsapp take over
-    if (["CONFLICT", "UNPAIRED", "UNLAUNCHED"].includes(state))
-      client.useHere();
-    // Detect disconnect on whatsapp
-    if ("UNPAIRED".includes(state)) console.log("logout");
-  });
-
-  client.onStreamChange((state) => {
-    let time = 0;
-    console.log("State Connection Stream: " + state);
-    clearTimeout(time);
-    if (state === "DISCONNECTED" || state === "SYNCING") {
-      time = setTimeout(() => {
-        client.useHere();
-      }, 80000);
-    }
-  });
-
   client.onIncomingCall(async (call) => {
     console.log(call);
     client.sendText(
