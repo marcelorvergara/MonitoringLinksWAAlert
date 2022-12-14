@@ -51,32 +51,7 @@ venom
       },
     }
   )
-  .then((client) => {
-    let time = 0;
-    let started = false;
-    client.onStateChange((state) => {
-      console.log("New state: ", state);
-      if (!started) {
-        start(client);
-        started = true;
-      }
-      // Force whatsapp take over
-      if (["CONFLICT", "UNPAIRED", "UNLAUNCHED"].includes(state))
-        client.useHere();
-      // Detect disconnect on whatsapp
-      if ("UNPAIRED".includes(state)) console.log("logout");
-    });
-
-    client.onStreamChange((state) => {
-      console.log("State Connection Stream: " + state);
-      clearTimeout(time);
-      if (state === "DISCONNECTED" || state === "SYNCING") {
-        time = setTimeout(() => {
-          client.close();
-        }, 80000);
-      }
-    });
-  })
+  .then((client) => start(client))
   .catch((error) => console.error(error));
 
 function start(client) {
