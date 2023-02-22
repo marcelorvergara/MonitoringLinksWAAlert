@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 const __dirname = path.resolve();
-app.use("/tmp", express.static(path.join(__dirname, "tmp")));
+app.use("/pub", express.static(path.join(__dirname, "pub")));
 
 venom
   .create(
@@ -26,7 +26,7 @@ venom
 
       var imageBuffer = response;
       fs.writeFile(
-        "tmp/out-qr.png",
+        "pub/out-qr.png",
         imageBuffer["data"],
         "binary",
         function (err) {
