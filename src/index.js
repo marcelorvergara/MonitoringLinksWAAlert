@@ -55,6 +55,25 @@ venom
   .catch((error) => console.error(error));
 
 function start(client) {
+  client.onStateChange((state) => {
+    console.log("State changed: ", state);
+    // force whatsapp take over
+    if ("CONFLICT".includes(state)) client.useHere();
+    // detect disconnect on whatsapp
+    if ("UNPAIRED".includes(state)) console.log("logout");
+  });
+
+  let time = 0;
+  client.onStreamChange((state) => {
+    console.log("State Connection Stream: " + state);
+    clearTimeout(time);
+    if (state === "DISCONNECTED" || state === "SYNCING") {
+      time = setTimeout(() => {
+        client.close();
+      }, 80000);
+    }
+  });
+
   client.onIncomingCall(async (call) => {
     console.log(call);
     client.sendText(
@@ -65,16 +84,15 @@ function start(client) {
 
   app.route("/messages").post(async (req, res) => {
     try {
-      const exist = await client.checkNumberStatus(req.body.number + "@c.us");
-      if (exist.numberExists) {
-        const result = await client.sendText(
-          req.body.number + "@c.us",
-          req.body.message
-        );
-        res.status(201).send(result);
-      }
+      // not working in 4.3.7
+      // const exist = await client.checkNumberStatus(req.body.number + "@c.us");
+      const result = await client.sendText(
+        req.body.number + "@c.us",
+        req.body.message
+      );
+      res.status(201).send(result);
     } catch (error) {
-      console.error(error);
+      console.error("error", error);
       res.status(404).send(error);
     }
   });
