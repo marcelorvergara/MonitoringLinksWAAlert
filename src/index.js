@@ -32,8 +32,16 @@ app.route("/messages").post(async (req, res) => {
 
 // receive whatsapp message
 app.route("/incoming").post(async (req, res) => {
+  console.log("req", req);
   try {
-    res.send("Visit https://ml.mvergara.net");
+    client.messages
+      .create({
+        body: "Visit https://ml.mvergara.net",
+        from: "whatsapp:+14155238886",
+        to: "whatsapp:+5521972464530",
+      })
+      .then((message) => console.log(message.sid))
+      .done();
   } catch (error) {
     console.error("error", error);
     res.status(404).send(error);
