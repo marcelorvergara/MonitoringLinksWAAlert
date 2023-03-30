@@ -39,11 +39,7 @@ app.route("/incoming").post(async (req, res) => {
         body: req.body.message,
         to: `whatsapp:+${req.body.number}`,
       })
-      .then(() =>
-        res
-          .status(201)
-          .send(res.status(201).send("Visit https://ml.mvergara.net"))
-      );
+      .then(() => res.status(200).send("Visit https://ml.mvergara.net"));
   } catch (error) {
     console.error("error", error);
     res.status(404).send(error);
