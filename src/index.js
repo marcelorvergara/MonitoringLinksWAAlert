@@ -33,7 +33,16 @@ app.route("/messages").post(async (req, res) => {
 // receive whatsapp message
 app.route("/incoming").post(async (req, res) => {
   try {
-    res.status(201).send("Visit https://ml.mvergara.net");
+    client.messages
+      .create({
+        from: "whatsapp:+14155238886",
+        to: `whatsapp:+${req.body.number}`,
+      })
+      .then(() =>
+        res
+          .status(201)
+          .send(res.status(201).send("Visit https://ml.mvergara.net"))
+      );
   } catch (error) {
     console.error("error", error);
     res.status(404).send(error);
