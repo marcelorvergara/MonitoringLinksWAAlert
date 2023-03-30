@@ -36,6 +36,7 @@ app.route("/incoming").post(async (req, res) => {
     client.messages
       .create({
         from: "whatsapp:+14155238886",
+        body: req.body.message,
         to: `whatsapp:+${req.body.number}`,
       })
       .then(() =>
