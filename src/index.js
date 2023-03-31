@@ -8,6 +8,7 @@ const port = process.env.PORT || 3002;
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioPonoe = process.env.TWILIO_PHONE;
 
 const client = twilio(accountSid, authToken);
 
@@ -19,7 +20,7 @@ app.route("/messages").post(async (req, res) => {
   try {
     client.messages
       .create({
-        from: "whatsapp:+14155238886",
+        from: `whatsapp:${twilioPonoe}`,
         body: req.body.message,
         to: `whatsapp:+${req.body.number}`,
       })
@@ -37,11 +38,10 @@ app.route("/incoming").post(async (req, res) => {
     client.messages
       .create({
         body: "Visit https://ml.mvergara.net",
-        from: "whatsapp:+14155238886",
+        from: `whatsapp:${twilioPonoe}`,
         to: "whatsapp:+5521972464530",
       })
-      .then((message) => console.log(message.sid))
-      .done();
+      .then((message) => console.log(message.sid));
   } catch (error) {
     console.error("error", error);
     res.status(404).send(error);
