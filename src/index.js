@@ -20,9 +20,13 @@ app.route("/messages").post(async (req, res) => {
   try {
     client.messages
       .create({
-        from: `whatsapp:${twilioPonoe}`,
+        from: req.body.number.startsWith("whatsapp")
+          ? `whatsapp:${twilioPonoe}`
+          : twilioPonoe,
         body: req.body.message,
-        to: `whatsapp:+${req.body.number}`,
+        to: req.body.number.startsWith("whatsapp")
+          ? `whatsapp:${req.body.number}`
+          : req.body.number,
       })
       .then((message) => res.status(201).send(message));
   } catch (error) {
@@ -33,13 +37,17 @@ app.route("/messages").post(async (req, res) => {
 
 // receive whatsapp message
 app.route("/incoming").post(async (req, res) => {
-  console.log("req", req);
+  console.log("req", req.body);
   try {
     client.messages
       .create({
-        body: "Visit https://ml.mvergara.net",
-        from: `whatsapp:${twilioPonoe}`,
-        to: "whatsapp:+5521972464530",
+        body: "Visit your dashboard and check your monitor.",
+        from: req.body.number.startsWith("whatsapp")
+          ? `whatsapp:${twilioPonoe}`
+          : twilioPonoe,
+        to: req.body.number.startsWith("whatsapp")
+          ? `whatsapp:${req.body.number}`
+          : req.body.number,
       })
       .then((message) => console.log(message.sid));
   } catch (error) {
