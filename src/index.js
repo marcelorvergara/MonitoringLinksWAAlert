@@ -35,15 +35,9 @@ app.route("/messages").post(async (req, res) => {
 
 // receive whatsapp message
 app.route("/incoming").post(async (req, res) => {
-  console.log("req 2", req.body);
+  console.log("req 2", req.body.From);
   try {
-    client.messages
-      .create({
-        body: "Visit your dashboard and check your monitor.",
-        from: "",
-        to: "",
-      })
-      .then((message) => console.log(message));
+    console.log("teste12341234");
   } catch (error) {
     console.error("error", error);
     res.status(404).send(error);
