@@ -35,7 +35,7 @@ app.route("/messages").post(async (req, res) => {
 
 // receive whatsapp message
 app.route("/incoming").post(async (req, res) => {
-  console.log("req 2", req.body);
+  console.log("req 2", req);
   try {
     console.log("teste12341234");
   } catch (error) {
