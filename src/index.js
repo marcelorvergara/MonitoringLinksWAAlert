@@ -35,7 +35,7 @@ app.route("/messages").post(async (req, res) => {
 
 // receive whatsapp message
 app.route("/incoming").post(async (req, res) => {
-  console.log("req 2", client.numbers);
+  console.log("req 2", client.from);
   try {
     client.messages
       .create({
