@@ -24,9 +24,7 @@ app.route("/messages").post(async (req, res) => {
           ? `whatsapp:${twilioPonoe}`
           : twilioPonoe,
         body: req.body.message,
-        to: req.body.number.startsWith("whatsapp")
-          ? `+${req.body.number}`
-          : `+${req.body.number}`,
+        to: `+${req.body.number}`,
       })
       .then((message) => res.status(201).send(message));
   } catch (error) {
@@ -45,9 +43,7 @@ app.route("/incoming").post(async (req, res) => {
         from: req.body.number.startsWith("whatsapp")
           ? `whatsapp:${twilioPonoe}`
           : twilioPonoe,
-        to: req.body.number.startsWith("whatsapp")
-          ? `+${req.body.number}`
-          : `+${req.body.number}`,
+        to: `+${req.body.number}`,
       })
       .then((message) => console.log(message.sid));
   } catch (error) {
