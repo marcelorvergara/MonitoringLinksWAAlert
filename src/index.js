@@ -40,12 +40,10 @@ app.route("/incoming").post(async (req, res) => {
     client.messages
       .create({
         body: "Visit your dashboard and check your monitor.",
-        from: req.body.number.startsWith("whatsapp")
-          ? `whatsapp:${twilioPonoe}`
-          : twilioPonoe,
-        to: req.body.number,
+        from: "",
+        to: "",
       })
-      .then((message) => console.log(message.sid));
+      .then((message) => console.log(message));
   } catch (error) {
     console.error("error", error);
     res.status(404).send(error);
