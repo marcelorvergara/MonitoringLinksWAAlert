@@ -18,6 +18,11 @@ app.use(express.json());
 // send alert
 app.route("/messages").post(async (req, res) => {
   try {
+    // Validate the presence of required parameters
+    if (!req.body.number || !req.body.message) {
+      res.status(400).send("Missing required number and message");
+      return;
+    }
     client.messages
       .create({
         from: req.body.number.startsWith("whatsapp")
